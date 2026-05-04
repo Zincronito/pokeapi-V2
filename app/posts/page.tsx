@@ -5,38 +5,32 @@ type Post = {
     title: string;
 };
 
-async function getTime() {
-    const res = await fetch("http://localhost:3000/api/time", {
-        next: { revalidate: 10 },
-    });
-    return res.json();
+// 1. Calculamos la hora directamente usando JavaScript puro
+// sin depender de un fetch a nuestro propio servidor apagado.
+function getTime() {
+    return { time: new Date().toLocaleTimeString() };
 }
 
 async function getPosts(): Promise<Post[]> {
-    // const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
-    //     cache: "force-cache", // Generación Estática por defecto
-    // });
-
-
-
     const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
         next: { revalidate: 10 }, // Generación Estática con Revalidación cada 10 segundos
     });
-
-    // Static Site Generation (SSG) Genera la página en tiempo de compilación
     return res.json();
 }
 
+// 2. Exportamos esta constante para decirle a Next.js que TODA esta página
+// (incluyendo la hora que calculamos arriba) debe revalidarse cada 10 segundos.
+export const revalidate = 10;
+
 export default async function PostsPage() {
     const posts = await getPosts();
-    const time = await getTime();
+    const time = getTime(); // Ya no necesitamos 'await' porque no es asíncrona
 
     return (
         <main>
             <h1>Posts</h1>
 
             <p>Hora generación: {time.time}</p>
-
 
             <Link href="/">Volver al inicio</Link>
 
