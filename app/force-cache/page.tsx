@@ -1,6 +1,6 @@
 import Link from "next/link";
-import PokemonList from "./components/pokemonLIst";
-import { getPokemons } from "./lib/getPokemons";
+import PokemonList from "../components/pokemonLIst";
+import { getPokemons } from "../lib/getPokemons";
 
 
 
@@ -19,11 +19,3 @@ export default async function Page() {
         </main>
     );
 }
-
-
-
-<ul>
-        <li><Link href="/force-cache">Force Cache (SSG)</Link></li>
-        <li><Link href="/revalidate">Revalidate (ISR)</Link></li>
-        <li><Link href="/no-store">No Store (SSR)</Link></li>
-      </ul>
